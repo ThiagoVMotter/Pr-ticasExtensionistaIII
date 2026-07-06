@@ -1,11 +1,9 @@
 <?php
 require_once '../includes/header.php';
 
-// Importa as classes do PHPMailer para o namespace global
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Carrega os arquivos do PHPMailer (Ajuste o caminho se necessário)
 require '../includes/PHPMailer/Exception.php';
 require '../includes/PHPMailer/PHPMailer.php';
 require '../includes/PHPMailer/SMTP.php';
@@ -27,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($nome) && !empty($email) && !empty($assunto) && !empty($mensagem)) {
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             try {
-                // 1. Grava no Banco de Dados (Backup da mensagem)
                 $stmt = $pdo->prepare("INSERT INTO mensagens_contato (nome, email, assunto, mensagem) VALUES (:nome, :email, :assunto, :mensagem)");
                 $stmt->execute([
                     ':nome' => $nome,
@@ -36,32 +33,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ':mensagem' => $mensagem
                 ]);
                 
-                // 2. Configura e envia o e-mail via PHPMailer
                 $mail = new PHPMailer(true);
 
                 try {
-                    // Configurações do Servidor SMTP (Exemplo usando Gmail)
                     $mail->isSMTP();                                            
                     $mail->Host       = 'smtp.gmail.com';                     
                     $mail->SMTPAuth   = true;                                   
-                    $mail->Username   = 'thiagovmotter@gmail.com';   // SUBSTITUA PELO SEU E-MAIL
+                    $mail->Username   = 'thiagovmotter@gmail.com';
                     $mail->Password   = 'hgjv plsn mfqm inqz';
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            
                     $mail->Port       = 587;                                    
 
-                    // Charset para evitar erros com acentuação
                     $mail->CharSet = 'UTF-8';
 
-                    // Remetente e Destinatário
-                    $mail->setFrom('seu_email@gmail.com', 'Sistema PetShop'); // Quem envia
-                    $mail->addAddress('seu_email@gmail.com', 'Admin PetShop'); // Quem recebe (pode ser o mesmo para testes)
-                    $mail->addReplyTo($email, $nome); // Se você clicar em "Responder", vai para o cliente
+                    $mail->setFrom('seu_email@gmail.com', 'Sistema PetShop'); 
+                    $mail->addAddress('seu_email@gmail.com', 'Admin PetShop'); 
+                    $mail->addReplyTo($email, $nome); 
 
-                    // Conteúdo do E-mail
                     $mail->isHTML(true);                                  
                     $mail->Subject = 'Novo Contato via Sistema: ' . $assunto;
                     
-                    // Corpo do e-mail em HTML
                     $corpo_email = "
                         <h2>Novo contato recebido - PetShop</h2>
                         <p><strong>Nome:</strong> {$nome}</p>

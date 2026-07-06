@@ -1,7 +1,6 @@
 <?php
 require_once '../includes/header.php';
 
-// Proteção da página
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: " . BASE_URL . "login/login.php");
     exit;
@@ -10,10 +9,8 @@ if (!isset($_SESSION['usuario_id'])) {
 $resultados = [];
 $termo_pesquisa = $_GET['q'] ?? '';
 
-// Só executa a busca se o usuário tiver digitado algo
 if (!empty($termo_pesquisa)) {
     try {
-        // Consulta unindo PET e CLIENTE. Busca tanto pelo nome do animal quanto pelo nome do tutor.
         $sql = "SELECT p.id_pet, p.nome AS nome_pet, p.especie, p.raca, 
                        c.nome AS nome_cliente, c.telefone 
                 FROM pet p
@@ -22,7 +19,6 @@ if (!empty($termo_pesquisa)) {
                 ORDER BY c.nome ASC, p.nome ASC";
                 
         $stmt = $pdo->prepare($sql);
-        // O % permite buscar partes da palavra (ex: 'joa' encontra 'João')
         $stmt->bindValue(':q', '%' . $termo_pesquisa . '%');
         $stmt->execute();
         

@@ -14,7 +14,6 @@ if (!$id) {
     exit;
 }
 
-// Busca os dados atuais do cliente para preencher o formulário
 $stmt = $pdo->prepare("SELECT * FROM cliente WHERE id_cliente = :id");
 $stmt->execute([':id' => $id]);
 $cliente = $stmt->fetch();

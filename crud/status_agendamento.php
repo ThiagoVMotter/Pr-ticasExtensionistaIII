@@ -10,7 +10,6 @@ if (!isset($_SESSION['usuario_id'])) {
 $id = $_GET['id'] ?? null;
 $acao = $_GET['acao'] ?? null;
 
-// Valida se a ação é uma das permitidas no ENUM do banco de dados
 $acoes_validas = ['Confirmado', 'Concluido', 'Cancelado'];
 
 if ($id && in_array($acao, $acoes_validas)) {

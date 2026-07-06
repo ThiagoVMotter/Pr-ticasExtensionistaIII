@@ -9,13 +9,11 @@ if (!isset($_SESSION['usuario_id'])) {
 $erro = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Dados do Cliente
     $nome_cliente = trim($_POST['nome_cliente']);
     $telefone = trim($_POST['telefone']);
     $email = trim($_POST['email']);
     $endereco = trim($_POST['endereco']);
 
-    // Dados do Pet
     $nome_pet = trim($_POST['nome_pet']);
     $especie = trim($_POST['especie']);
     $raca = trim($_POST['raca']);
@@ -25,10 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!empty($nome_cliente) && !empty($telefone) && !empty($nome_pet) && !empty($especie) && !empty($sexo)) {
         try {
-            // Inicia a Transação SQL
             $pdo->beginTransaction();
 
-            // 1. Insere o Cliente
             $stmtCliente = $pdo->prepare("INSERT INTO cliente (nome, telefone, email, endereco) VALUES (:nome, :telefone, :email, :endereco)");
             $stmtCliente->execute([
                 ':nome' => $nome_cliente,
@@ -37,10 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':endereco' => $endereco
             ]);
             
-            // Captura o ID do cliente que acabou de ser gerado pelo AUTO_INCREMENT
             $id_cliente_gerado = $pdo->lastInsertId();
 
-            // 2. Insere o Pet vinculado a este Cliente
             $stmtPet = $pdo->prepare("INSERT INTO pet (id_cliente, nome, especie, raca, sexo, peso, cor) VALUES (:id_cliente, :nome, :especie, :raca, :sexo, :peso, :cor)");
             $stmtPet->execute([
                 ':id_cliente' => $id_cliente_gerado,
@@ -52,14 +46,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':cor' => $cor
             ]);
 
-            // Confirma as duas operações no banco de dados
             $pdo->commit();
 
             header("Location: listar_clientes.php?msg=sucesso");
             exit;
             
         } catch (PDOException $e) {
-            // Se algo der errado, desfaz tudo (Rollback) para não deixar dados pela metade
             $pdo->rollBack();
             $erro = "Erro ao realizar o cadastro unificado: " . $e->getMessage();
         }

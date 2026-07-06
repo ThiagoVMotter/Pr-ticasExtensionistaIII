@@ -8,7 +8,6 @@ if (!isset($_SESSION['usuario_id'])) {
 
 $erro = '';
 
-// Carrega os dados para preencher os Selects do formulário
 $pets = $pdo->query("SELECT p.id_pet, p.nome, c.nome AS cliente_nome FROM pet p INNER JOIN cliente c ON p.id_cliente = c.id_cliente ORDER BY p.nome ASC")->fetchAll();
 $servicos = $pdo->query("SELECT id_servico, nome, preco FROM servico ORDER BY nome ASC")->fetchAll();
 $funcionarios = $pdo->query("SELECT id_funcionario, nome FROM funcionario ORDER BY nome ASC")->fetchAll();
@@ -35,7 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
             
         } catch (PDOException $e) {
-            // Captura o erro da restrição UNIQUE KEY uk_agenda_funcionario criada na Etapa 1
             if ($e->getCode() == '23000' || $e->errorInfo[1] == 1062) {
                 $erro = "Conflito de agenda: Este profissional já possui um serviço marcado para este dia e horário.";
             } else {

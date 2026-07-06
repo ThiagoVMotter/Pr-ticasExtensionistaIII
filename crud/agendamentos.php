@@ -6,7 +6,6 @@ if (!isset($_SESSION['usuario_id'])) {
     exit;
 }
 
-// Consulta avançada buscando dados de 5 tabelas diferentes
 $sql = "SELECT a.id_agendamento, a.data_agendamento, a.horario, a.status, 
                p.nome AS pet_nome, c.nome AS cliente_nome, 
                s.nome AS servico_nome, f.nome AS func_nome 
@@ -61,7 +60,7 @@ if (isset($_GET['msg'])) {
                         <td style="padding: 12px;"><?php echo htmlspecialchars($a['func_nome']); ?></td>
                         <td style="padding: 12px;">
                             <?php 
-                                $cor_status = '#64748b'; // Pendente
+                                $cor_status = '#64748b';
                                 if ($a['status'] == 'Confirmado') $cor_status = '#0284c7';
                                 if ($a['status'] == 'Concluido') $cor_status = '#22c55e';
                                 if ($a['status'] == 'Cancelado') $cor_status = '#ef4444';
