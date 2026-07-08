@@ -38,9 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 try {
                     $mail->isSMTP();                                            
                     $mail->Host       = 'smtp.gmail.com';                     
-                    $mail->SMTPAuth   = true;                                   
-                    $mail->Username   = 'thiagovmotter@gmail.com';
-                    $mail->Password   = 'tpyb dbhn isos zbap';
+                    $mail->SMTPAuth   = true;  
+                    //REMOVI O E-MAIL E A SENHA DE APP VISTO TER REALIZADO DEPLOY NO GITHUB, MAS CASO ADICIONE, IRA FUNCIONAR                                 
+                    $mail->Username   = '';
+                    $mail->Password   = '';
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            
                     $mail->Port       = 587;                                    
 
