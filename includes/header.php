@@ -22,14 +22,21 @@ require_once __DIR__ . '/conexao.php';
             
             <?php if (isset($_SESSION['usuario_id'])): ?>
                 
-                <?php if ($_SESSION['usuario_perfil'] === 'administrador'): ?>
-                    <li><a href="<?php echo BASE_URL; ?>usuarios/cadastrar_usuario.php" style="color: var(--danger-color); font-weight: bold;">Usuários</a></li>
+                <?php if ($_SESSION['usuario_perfil'] === 'cliente'): ?>
+                    <li><a href="<?php echo BASE_URL; ?>area_cliente/meus_pets.php">Meus Pets</a></li>
+                    <li><a href="<?php echo BASE_URL; ?>area_cliente/meus_agendamentos.php">Meus Agendamentos</a></li>
+                    <li><a href="<?php echo BASE_URL; ?>contato/contato.php">Contato</a></li>
+                
+                <?php else: ?>
+                    <?php if ($_SESSION['usuario_perfil'] === 'administrador'): ?>
+                        <li><a href="<?php echo BASE_URL; ?>usuarios/cadastrar_usuario.php" style="color: var(--danger-color); font-weight: bold;">Usuários</a></li>
+                    <?php endif; ?>
+                    <li><a href="<?php echo BASE_URL; ?>crud/agendamentos.php">Agenda Geral</a></li>
+                    <li><a href="<?php echo BASE_URL; ?>crud/listar_clientes.php">Clientes</a></li>
+                    <li><a href="<?php echo BASE_URL; ?>consultas/pesquisa.php">Pesquisa</a></li>
+                    <li><a href="<?php echo BASE_URL; ?>contato/contato.php">Contato</a></li>
                 <?php endif; ?>
 
-                <li><a href="<?php echo BASE_URL; ?>crud/agendamentos.php">Agenda</a></li>
-                <li><a href="<?php echo BASE_URL; ?>crud/listar_clientes.php">Clientes</a></li>
-                <li><a href="<?php echo BASE_URL; ?>consultas/pesquisa.php">Pesquisa</a></li>
-                <li><a href="<?php echo BASE_URL; ?>contato/contato.php">Contato</a></li>
                 <li><a href="<?php echo BASE_URL; ?>login/logout.php" class="btn btn-danger">Sair</a></li>
             <?php else: ?>
                 <li><a href="<?php echo BASE_URL; ?>login/login.php" class="btn">Entrar</a></li>
